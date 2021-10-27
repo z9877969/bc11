@@ -1,12 +1,13 @@
 import MainPage from "../_pages/MainPage/MainPage";
 import TransactionPage from '../_pages/TransactionPage/TransactionPage'
 import "./App.css";
+import s from '../StatisticsBtns/StatisticsBtns.module.css';
 
 const App = () => {
   return (
     <>
-      {/* <MainPage /> */}
-      <TransactionPage/>
+      <MainPage />
+      {/* <TransactionPage/> */}
     </>
   );
 };
