@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  justify-content: space-around;
+  width: 300px;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: green;
+}
+
+/* .container > button {
+  width: 40%;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: red;
+} */
+
+.button {
+  width: 40%;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: red;
+}

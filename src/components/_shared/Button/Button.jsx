@@ -1,5 +1,16 @@
-const Button = ({ type = "button", title, spritePath, iconId, name }) => (
-  <button name={name} type={type}>
+const Button = ({
+  type = "button",
+  title,
+  spritePath,
+  iconId,
+  name,
+  className,
+}) => (
+  <button
+    className={`button ${className && className}`}
+    name={name}
+    type={type}
+  >
     {title ? (
       title
     ) : (
