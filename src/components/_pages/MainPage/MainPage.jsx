@@ -7,15 +7,29 @@ import {
   mainInfoBalance,
 } from "../../../assets/options/mainInfoOpts.json";
 
-const MainPage = () => {
+const MainPage = ({ handleOpenPageFromApp }) => {
   return (
     <MainSection title="Журнал расходов">
-      <MainInfo btnIcon="icon-plus" options={mainInfoCosts} title="Расходы" />
-      <MainInfo btnIcon="icon-plus" options={mainInfoIncomes} title="Доходы" />
+      <MainInfo
+        handleOpenPageFromMain={handleOpenPageFromApp}
+        btnIcon="icon-plus"
+        options={mainInfoCosts}
+        title="Расходы"
+        activePage="costs"
+      />
+      <MainInfo
+        btnIcon="icon-plus"
+        options={mainInfoIncomes}
+        title="Доходы"
+        activePage="incomes"
+        handleOpenPageFromMain={handleOpenPageFromApp}
+      />
       <MainInfo
         btnIcon="icon-navigation-more"
         options={mainInfoBalance}
         title="Баланс"
+        activePage="balance"
+        handleOpenPageFromMain={handleOpenPageFromApp}
       />
       <StatisticsBtns />
     </MainSection>

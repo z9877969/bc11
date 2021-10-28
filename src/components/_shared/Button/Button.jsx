@@ -5,11 +5,13 @@ const Button = ({
   iconId,
   name,
   className,
+  cbOnClick
 }) => (
   <button
     className={`button ${className && className}`}
     name={name}
     type={type}
+    onClick={cbOnClick}
   >
     {title ? (
       title
