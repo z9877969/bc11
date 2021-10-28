@@ -1,5 +1,6 @@
 import MainInfo from "../../MainInfo/MainInfo";
 import StatisticsBtns from "../../StatisticsBtns/StatisticsBtns";
+import MainSection from "../../_shared/MainSection/MainSection";
 import {
   mainInfoCosts,
   mainInfoIncomes,
@@ -8,13 +9,16 @@ import {
 
 const MainPage = () => {
   return (
-    <>
-      <h1>Журнал расходов</h1>
-      <MainInfo btnTitle={"Add"} options={mainInfoCosts} title="Расходы" />
-      <MainInfo btnTitle={"Add"} options={mainInfoIncomes} title="Доходы" />
-      <MainInfo btnTitle={"Show"} options={mainInfoBalance} title="Баланс" />
+    <MainSection title="Журнал расходов">
+      <MainInfo btnIcon="icon-plus" options={mainInfoCosts} title="Расходы" />
+      <MainInfo btnIcon="icon-plus" options={mainInfoIncomes} title="Доходы" />
+      <MainInfo
+        btnIcon="icon-navigation-more"
+        options={mainInfoBalance}
+        title="Баланс"
+      />
       <StatisticsBtns />
-    </>
+    </MainSection>
   );
 };
 
