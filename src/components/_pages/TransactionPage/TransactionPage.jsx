@@ -19,7 +19,7 @@ class TransactionPage extends Component {
       <>
         <GoBackHeader
           handleGoBack={!isCatList ? handleGoBack : this.toggleCatList}
-          title={transType === "incomes" ? "Доходы" : "Расходы"}
+          title={isCatList ? "Категории" : transType === "incomes" ? "Доходы" : "Расходы"}
         />
         {!isCatList ? (
           <form>
