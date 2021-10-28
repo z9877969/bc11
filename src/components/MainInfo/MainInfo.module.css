@@ -1,0 +1,52 @@
+.section {
+  display: flex;
+  padding: 15px 0;
+}
+
+.mainWrapper {
+  flex-grow: 1;
+}
+
+.titleWrapper,
+.item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title,
+.currency {
+  padding: 5px 0;
+}
+
+.currency,
+.sum {
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+}
+
+.item {
+  padding: 10px 0;
+}
+
+.item:not(:last-child) {
+  border-bottom: 1px solid darkgrey;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background-color: #90ee90;
+}
+
+.btn svg {
+  height: 60%;
+  fill: #fff;
+}

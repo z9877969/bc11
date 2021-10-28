@@ -1,26 +1,18 @@
 .container {
   display: flex;
-  justify-content: space-around;
-  width: 300px;
+  justify-content: space-between;
   margin: 0 auto;
-  padding: 10px;
-  background-color: green;
+  padding: 10px 0;
 }
 
-/* .container > button {
-  width: 40%;
-  height: 30px;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  background-color: red;
-} */
-
 .button {
-  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48%;
   height: 30px;
   border: none;
   border-radius: 5px;
-  padding: 5px 10px;
-  background-color: red;
+  background-color: rgb(228, 192, 192);
+  font-size: 16px;
 }
