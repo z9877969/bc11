@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import MainInfo from "../../MainInfo/MainInfo";
 import StatisticsBtns from "../../StatisticsBtns/StatisticsBtns";
 import MainSection from "../../_shared/MainSection/MainSection";
@@ -34,6 +35,10 @@ const MainPage = ({ handleOpenPageFromApp }) => {
       <StatisticsBtns />
     </MainSection>
   );
+};
+
+MainPage.propTypes = {
+  handleOpenPageFromApp: PropTypes.func.isRequired,
 };
 
 export default MainPage;

@@ -3,8 +3,9 @@ const LabelInput = ({
   title,
   placeholder,
   name,
-  defaultValue,
-  cbOnClick,
+  value,
+  cbOnClick = null,
+  cbOnChange = null,
 }) => {
   return (
     <label>
@@ -13,8 +14,10 @@ const LabelInput = ({
         name={name}
         type={type}
         placeholder={placeholder}
-        value={defaultValue}
+        value={value}
         onClick={cbOnClick}
+        // onFocus={() => console.log("focus")}
+        onChange={cbOnChange}
       />
     </label>
   );
