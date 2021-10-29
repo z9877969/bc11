@@ -44,7 +44,7 @@ MainInfo.propTypes = {
   title: PropTypes.string.isRequired,
   btnIcon: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  handleOpenPage: PropTypes.func.isRequired,
+  handleOpenPageFromMain: PropTypes.func.isRequired,
 };
 
 export default MainInfo;
