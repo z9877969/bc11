@@ -1,7 +1,14 @@
+import PropTypes from "prop-types";
 import sprite from "../../assets/icons/sprite.svg";
 import s from "./MainInfo.module.css";
 
-const MainInfo = ({ title, btnIcon, options }) => {
+const MainInfo = ({
+  title,
+  btnIcon,
+  options,
+  handleOpenPageFromMain,
+  activePage,
+}) => {
   return (
     <section className={s.section}>
       <div className={s.mainWrapper}>
@@ -18,13 +25,26 @@ const MainInfo = ({ title, btnIcon, options }) => {
           ))}
         </ul>
       </div>
-      <button className={s.btn} type="button">
+      <button
+        className={s.btn}
+        type="button"
+        onClick={() => {
+          handleOpenPageFromMain(activePage);
+        }}
+      >
         <svg>
           <use href={sprite + "#" + btnIcon}></use>
         </svg>
       </button>
     </section>
   );
+};
+
+MainInfo.propTypes = {
+  title: PropTypes.string.isRequired,
+  btnIcon: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  handleOpenPage: PropTypes.func.isRequired,
 };
 
 export default MainInfo;
