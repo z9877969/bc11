@@ -1,11 +1,12 @@
+import sprite from "../../../assets/icons/sprite.svg";
 const Button = ({
   type = "button",
   title,
-  spritePath,
+  spritePath = sprite,
   iconId,
   name,
   className,
-  cbOnClick
+  cbOnClick,
 }) => (
   <button
     className={`button ${className && className}`}

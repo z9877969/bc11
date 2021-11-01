@@ -1,0 +1,20 @@
+.button {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  padding: 0;
+}
+
+.button:first-child {
+  margin-left: auto;
+}
+
+.button svg {
+  height: 100%;
+}
+
+.item {
+  display: flex;
+  width: 200px;
+  /* justify-content: space-between; */
+}

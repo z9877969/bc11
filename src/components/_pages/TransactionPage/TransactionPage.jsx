@@ -5,6 +5,10 @@ import CategoriesList from "../../CategoriesList/CategoriesList";
 import GoBackHeader from "../../_shared/GoBackHeader/GoBackHeader";
 import LabelInput from "../../_shared/LabelInput/LabelInput";
 import Button from "../../_shared/Button/Button";
+import {
+  costsCategories,
+  incomesCategories,
+} from "../../../assets/options/transactionCategories.json";
 // { transType, handleGoBack }
 class TransactionPage extends Component {
   static propTypes = {
@@ -21,6 +25,8 @@ class TransactionPage extends Component {
     currency: "UAH",
     comment: "",
     isCatList: false,
+    categoriesList:
+      this.props.transType === "costs" ? costsCategories : incomesCategories,
   };
 
   toggleCatList = () => {
@@ -50,9 +56,28 @@ class TransactionPage extends Component {
     addTransaction({ transaction, transType });
   };
 
+  deleteCategory = (id) => {
+    console.log(id);
+    this.setState((prevState) => {
+      return {
+        categoriesList: prevState.categoriesList.filter(
+          (category) => category.name !== id
+        ),
+      };
+    });
+  };
+
   render() {
-    const { isCatList, day, time, category, currency, sum, comment } =
-      this.state;
+    const {
+      isCatList,
+      day,
+      time,
+      category,
+      currency,
+      sum,
+      comment,
+      categoriesList,
+    } = this.state;
     const { transType, handleGoBack } = this.props;
     return (
       <>
@@ -111,7 +136,10 @@ class TransactionPage extends Component {
             />
           </form>
         ) : (
-          <CategoriesList />
+          <CategoriesList
+            categoriesList={categoriesList}
+            deleteCategory={this.deleteCategory}
+          />
         )}
       </>
     );
