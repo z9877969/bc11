@@ -1,0 +1,12 @@
+{
+  "costsCategories": [
+    { "title": "продукты", "name": "foods" },
+    { "title": "кино", "name": "cinema" },
+    { "title": "здоровье", "name": "health" }
+  ],
+  "incomesCategories": [
+    { "title": "зарплата", "name": "salary" },
+    { "title": "бонусы", "name": "bonus" },
+    { "title": "премия", "name": "prize" }
+  ]
+}
