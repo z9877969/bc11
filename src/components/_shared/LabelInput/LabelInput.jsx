@@ -6,6 +6,7 @@ const LabelInput = ({
   value,
   cbOnClick = null,
   cbOnChange = null,
+  checked = null,
 }) => {
   return (
     <label>
@@ -18,6 +19,7 @@ const LabelInput = ({
         onClick={cbOnClick}
         // onFocus={() => console.log("focus")}
         onChange={cbOnChange}
+        checked={ checked}
       />
     </label>
   );

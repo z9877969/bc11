@@ -137,7 +137,7 @@ class TransactionPage extends Component {
           </form>
         ) : (
           <CategoriesList
-            categoriesList={categoriesList}
+              categoriesList={categoriesList} handleChange={this.handleChange} currCategory={ this.state.category}
             deleteCategory={this.deleteCategory}
           />
         )}
