@@ -20,7 +20,7 @@ class TransactionPage extends Component {
   state = {
     day: "2021-10-29",
     time: "16:15",
-    category: this.props.transType === "incomes" ? "Зарплата" : "Продукты",
+    category: this.props.transType === "incomes" ? "salary" : "foods",
     sum: "",
     currency: "UAH",
     comment: "",
@@ -37,6 +37,7 @@ class TransactionPage extends Component {
   handleChange = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
+    name === "category" && this.setState({ isCatList: false });
   };
 
   // openCatList = () => {
@@ -49,7 +50,7 @@ class TransactionPage extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { isCatList, ...dataForm } = this.state;
+    const { isCatList, categoriesList, ...dataForm } = this.state;
     const { addTransaction, transType } = this.props;
     const transaction = { ...dataForm, id: shortid.generate() };
     // addTransaction({ transaction: transaction, transType: transType });
@@ -67,6 +68,12 @@ class TransactionPage extends Component {
     });
   };
 
+  addCategory = (category) => {
+    this.setState((prev) => ({
+      categoriesList: [...prev.categoriesList, category],
+    }));
+  };
+
   render() {
     const {
       isCatList,
@@ -79,6 +86,11 @@ class TransactionPage extends Component {
       categoriesList,
     } = this.state;
     const { transType, handleGoBack } = this.props;
+    console.log(categoriesList);
+    const categoryValue =
+      categoriesList.find(({ name }) => this.state.category === name)?.title ||
+      categoriesList[0].title;
+
     return (
       <>
         <GoBackHeader
@@ -112,7 +124,7 @@ class TransactionPage extends Component {
               title={"Категория"}
               name={"category"}
               type={"button"}
-              value={category}
+              value={categoryValue}
               cbOnClick={this.toggleCatList}
             />
             <LabelInput
@@ -137,8 +149,11 @@ class TransactionPage extends Component {
           </form>
         ) : (
           <CategoriesList
-              categoriesList={categoriesList} handleChange={this.handleChange} currCategory={ this.state.category}
+            categoriesList={categoriesList}
+            handleChange={this.handleChange}
+            currCategory={this.state.category}
             deleteCategory={this.deleteCategory}
+            addCategory={this.addCategory}
           />
         )}
       </>
