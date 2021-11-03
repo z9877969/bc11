@@ -24,33 +24,33 @@ class TransactionPage extends Component {
     sum: "",
     currency: "UAH",
     comment: "",
-    isCatList: false,
+    isOpenCatlList: false,
     categoriesList:
       this.props.transType === "costs" ? costsCategories : incomesCategories,
   };
 
   toggleCatList = () => {
-    const cbForSetState = (prevState) => ({ isCatList: !prevState.isCatList });
+    const cbForSetState = (prevState) => ({ isOpenCatlList: !prevState.isOpenCatlList });
     this.setState(cbForSetState);
   };
 
   handleChange = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
-    name === "category" && this.setState({ isCatList: false });
+    name === "category" && this.setState({ isOpenCatlList: false });
   };
 
   // openCatList = () => {
-  //   this.setState({ isCatList: true });
+  //   this.setState({ isOpenCatlList: true });
   // };
 
   // closeCatList = () => {
-  //   this.setState({ isCatList: false });
+  //   this.setState({ isOpenCatlList: false });
   // };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { isCatList, categoriesList, ...dataForm } = this.state;
+    const { isOpenCatlList, categoriesList, ...dataForm } = this.state;
     const { addTransaction, transType } = this.props;
     const transaction = { ...dataForm, id: shortid.generate() };
     // addTransaction({ transaction: transaction, transType: transType });
@@ -76,7 +76,7 @@ class TransactionPage extends Component {
 
   render() {
     const {
-      isCatList,
+      isOpenCatlList,
       day,
       time,
       category,
@@ -94,16 +94,16 @@ class TransactionPage extends Component {
     return (
       <>
         <GoBackHeader
-          handleGoBack={!isCatList ? handleGoBack : this.toggleCatList}
+          handleGoBack={!isOpenCatlList ? handleGoBack : this.toggleCatList}
           title={
-            isCatList
+            isOpenCatlList
               ? "Категории"
               : transType === "incomes"
               ? "Доходы"
               : "Расходы"
           }
         />
-        {!isCatList ? (
+        {!isOpenCatlList ? (
           <form onSubmit={this.handleSubmit}>
             <Button type="submit" title="Ok" />
             <LabelInput
