@@ -10,6 +10,22 @@ class App extends Component {
     costs: [],
   };
 
+  componentDidMount() {
+    const parsCosts = JSON.parse(localStorage.getItem("costs"));
+    const parsIncomes = JSON.parse(localStorage.getItem("incomes"));
+    this.setState({ costs: parsCosts || [] });
+    this.setState({ incomes: parsIncomes || [] });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.incomes !== this.state.incomes) {
+      localStorage.setItem("incomes", JSON.stringify(this.state.incomes));
+    }
+    if (prevState.costs !== this.state.costs) {
+      localStorage.setItem("costs", JSON.stringify(this.state.costs));
+    }
+  }
+
   handleTogglePage = (activePageProp = "") => {
     this.setState({ activePage: activePageProp });
   };
