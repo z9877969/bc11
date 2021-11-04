@@ -1,0 +1,60 @@
+{
+  "costs": [
+    {
+      "day": "2021-10-29",
+      "time": "16:15",
+      "category": "cinema",
+      "sum": "1000",
+      "currency": "UAH",
+      "comment": "",
+      "id": 2
+    },
+    {
+      "day": "2021-10-29",
+      "time": "16:15",
+      "category": "foods",
+      "sum": "1000",
+      "currency": "UAH",
+      "comment": "",
+      "id": 3
+    },
+    {
+      "day": "2021-10-29",
+      "time": "16:15",
+      "category": "foods",
+      "sum": "",
+      "currency": "UAH",
+      "comment": "",
+      "id": 4
+    },
+    {
+      "day": "2021-10-29",
+      "time": "16:15",
+      "category": "foods",
+      "sum": "",
+      "currency": "UAH",
+      "comment": "",
+      "id": 5
+    },
+    {
+      "day": "2021-10-29",
+      "time": "16:15",
+      "category": "foods",
+      "sum": "",
+      "currency": "UAH",
+      "comment": "",
+      "id": 6
+    }
+  ],
+  "incomes": [
+    {
+      "day": "2021-10-29",
+      "time": "16:15",
+      "category": "salary",
+      "sum": "1500",
+      "currency": "UAH",
+      "comment": "",
+      "id": 1
+    }
+  ]
+}
