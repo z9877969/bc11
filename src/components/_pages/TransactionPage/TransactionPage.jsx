@@ -1,6 +1,7 @@
 import { Component } from "react";
 import PropTypes from "prop-types";
-import shortid from "shortid";
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import CategoriesList from "../../CategoriesList/CategoriesList";
 import GoBackHeader from "../../_shared/GoBackHeader/GoBackHeader";
 import LabelInput from "../../_shared/LabelInput/LabelInput";
@@ -9,7 +10,9 @@ import {
   costsCategories,
   incomesCategories,
 } from "../../../assets/options/transactionCategories.json";
-// { transType, handleGoBack }
+import { addTransactionApi } from "../../../services/api";
+
+
 class TransactionPage extends Component {
   static propTypes = {
     transType: PropTypes.string.isRequired,
@@ -25,12 +28,15 @@ class TransactionPage extends Component {
     currency: "UAH",
     comment: "",
     isOpenCatlList: false,
+    isLoading: false,
     categoriesList:
       this.props.transType === "costs" ? costsCategories : incomesCategories,
   };
 
   toggleCatList = () => {
-    const cbForSetState = (prevState) => ({ isOpenCatlList: !prevState.isOpenCatlList });
+    const cbForSetState = (prevState) => ({
+      isOpenCatlList: !prevState.isOpenCatlList,
+    });
     this.setState(cbForSetState);
   };
 
@@ -50,11 +56,18 @@ class TransactionPage extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { isOpenCatlList, categoriesList, ...dataForm } = this.state;
-    const { addTransaction, transType } = this.props;
-    const transaction = { ...dataForm, id: shortid.generate() };
-    // addTransaction({ transaction: transaction, transType: transType });
-    addTransaction({ transaction, transType });
+    const { isOpenCatlList, categoriesList, isLoading, ...dataForm } =
+      this.state;
+    const { addTransaction, transType, setError } = this.props;
+    this.toggleLoader();
+    addTransactionApi({ transaction: dataForm, transType })
+      .then((transaction) => addTransaction({ transaction, transType }))
+      .catch((err) => setError(err.message))
+      .finally(() => this.toggleLoader());
+  };
+
+  toggleLoader = () => {
+    this.setState({ isLoading: !this.state.isLoading });
   };
 
   deleteCategory = (id) => {
@@ -105,7 +118,16 @@ class TransactionPage extends Component {
         />
         {!isOpenCatlList ? (
           <form onSubmit={this.handleSubmit}>
-            <Button type="submit" title="Ok" />
+            <Button type="submit" title="Ok" />{" "}
+            {this.state.isLoading && (
+              <Loader
+                type="Puff"
+                color="#00BFFF"
+                height={30}
+                width={30}
+                timeout={3000} //3 secs
+              />
+            )}
             <LabelInput
               value={day}
               title={"День"}

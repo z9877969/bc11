@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { getTransactionsApi } from "../../services/api";
 import MainPage from "../_pages/MainPage/MainPage";
 import TransactionPage from "../_pages/TransactionPage/TransactionPage";
 import "./App.css";
@@ -8,33 +9,29 @@ class App extends Component {
     activePage: "", // costs || incomes || balance
     incomes: [],
     costs: [],
+    error: null,
+    isLoading: false,
   };
 
-  componentDidMount() {
-    const parsCosts = JSON.parse(localStorage.getItem("costs"));
-    const parsIncomes = JSON.parse(localStorage.getItem("incomes"));
-    this.setState({ costs: parsCosts || [] });
-    this.setState({ incomes: parsIncomes || [] });
+  async componentDidMount() {
+    this.setState({ isLoading: true });
+    try {
+      const costs = await getTransactionsApi("costs");
+      this.setState({ costs });
+      const incomes = await getTransactionsApi("incomes");
+      this.setState({ incomes });
+    } catch (err) {
+      this.setError(err);
+    } finally {
+      this.setState({ isLoading: false });
+    }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.incomes !== this.state.incomes) {
-      localStorage.setItem("incomes", JSON.stringify(this.state.incomes));
-    }
-    if (prevState.costs !== this.state.costs) {
-      localStorage.setItem("costs", JSON.stringify(this.state.costs));
-    }
-  }
+  setError = (err) => this.setState({ error: err });
 
   handleTogglePage = (activePageProp = "") => {
     this.setState({ activePage: activePageProp });
   };
-
-  // addCosts = (transaction) => {
-  //   this.setState((prevState) => ({
-  //     costs: [...prevState.costs, transaction],
-  //   }));
-  // };
 
   addTransaction = ({ transaction, transType }) => {
     // costs || incomes
@@ -44,7 +41,9 @@ class App extends Component {
   };
 
   render() {
-    const { activePage, costs, incomes } = this.state;
+    const { activePage, costs, incomes, error, isLoading } = this.state;
+    if (error) return <h1>{error}</h1>;
+    if (isLoading) return <h1>Loading...</h1>;
     switch (activePage) {
       case "costs":
         return (
@@ -52,6 +51,7 @@ class App extends Component {
             handleGoBack={this.handleTogglePage}
             transType={"costs"}
             addTransaction={this.addTransaction}
+            setError={this.setError}
           />
         );
       case "incomes":
@@ -60,6 +60,7 @@ class App extends Component {
             handleGoBack={this.handleTogglePage}
             transType={"incomes"}
             addTransaction={this.addTransaction}
+            setError={this.setError}
           />
         );
       case "balance":
