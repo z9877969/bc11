@@ -1,66 +1,64 @@
-import { Component } from "react";
+import {  useEffect, useState } from "react";
 import { getTransactionsApi } from "../../services/api";
 import MainPage from "../_pages/MainPage/MainPage";
 import TransactionPage from "../_pages/TransactionPage/TransactionPage";
 import "./App.css";
 
-class App extends Component {
-  state = {
-    activePage: "", // costs || incomes || balance
-    incomes: [],
-    costs: [],
-    error: null,
-    isLoading: false,
-  };
+const App  =()=>{
+  
+  const [activePage, setActivePage] = useState('')
+  const [incomes, setIncomes] = useState([])
+  const [costs, setCosts] = useState([])
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading]= useState(false)
 
-  async componentDidMount() {
-    this.setState({ isLoading: true });
+  useEffect(() => { const getTransactions = async() => {
+       setIsLoading(true)
     try {
       const costs = await getTransactionsApi("costs");
-      this.setState({ costs });
+         setCosts(costs)
       const incomes = await getTransactionsApi("incomes");
-      this.setState({ incomes });
+       setIncomes(incomes)
     } catch (err) {
-      this.setError(err);
+      setError(err)
     } finally {
-      this.setState({ isLoading: false });
+       setIsLoading(false)
     }
   }
+    getTransactions();
+  }, [])
 
-  setError = (err) => this.setState({ error: err });
-
-  handleTogglePage = (activePageProp = "") => {
-    this.setState({ activePage: activePageProp });
+  const handleTogglePage = (activePageProp = "") => {
+    setActivePage(activePageProp)
   };
 
-  addTransaction = ({ transaction, transType }) => {
-    // costs || incomes
-    this.setState((prevState) => ({
-      [transType]: [...prevState[transType], transaction],
-    }));
+  const addTransaction = ({ transaction, transType }) => {
+    if (transType === 'costs') {
+      setCosts(prev=> [...prev, transaction])
+    }
+     if (transType === 'incomes') {
+      setIncomes(prev=> [...prev, transaction])
+    }
   };
-
-  render() {
-    const { activePage, costs, incomes, error, isLoading } = this.state;
-    if (error) return <h1>{error}</h1>;
+    if (error) return <h1>{error.message}</h1>;
     if (isLoading) return <h1>Loading...</h1>;
     switch (activePage) {
       case "costs":
         return (
           <TransactionPage
-            handleGoBack={this.handleTogglePage}
+            handleGoBack={handleTogglePage}
             transType={"costs"}
-            addTransaction={this.addTransaction}
-            setError={this.setError}
+            addTransaction={addTransaction}
+            setError={setError}
           />
         );
       case "incomes":
         return (
           <TransactionPage
-            handleGoBack={this.handleTogglePage}
+            handleGoBack={handleTogglePage}
             transType={"incomes"}
-            addTransaction={this.addTransaction}
-            setError={this.setError}
+            addTransaction={addTransaction}
+            setError={setError}
           />
         );
       case "balance":
@@ -83,9 +81,8 @@ class App extends Component {
           </>
         );
       default:
-        return <MainPage handleOpenPageFromApp={this.handleTogglePage} />;
+        return <MainPage handleOpenPageFromApp={handleTogglePage} />;
     }
-  }
 }
 
 export default App;

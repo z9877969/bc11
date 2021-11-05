@@ -44,6 +44,33 @@
       "currency": "UAH",
       "comment": "",
       "id": 6
+    },
+    {
+      "day": "2021-10-29",
+      "time": "16:15",
+      "category": "foods",
+      "sum": "",
+      "currency": "UAH",
+      "comment": "",
+      "id": 7
+    },
+    {
+      "day": "2021-10-29",
+      "time": "16:15",
+      "category": "foods",
+      "sum": "",
+      "currency": "UAH",
+      "comment": "",
+      "id": 8
+    },
+    {
+      "day": "2021-10-29",
+      "time": "16:15",
+      "category": "foods",
+      "sum": "",
+      "currency": "UAH",
+      "comment": "",
+      "id": 9
     }
   ],
   "incomes": [
