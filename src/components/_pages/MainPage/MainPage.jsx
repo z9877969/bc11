@@ -7,12 +7,15 @@ import {
   mainInfoIncomes,
   mainInfoBalance,
 } from "../../../assets/options/mainInfoOpts.json";
+import { useContext } from "react";
+import { baseContext } from "../../../context/BaseProvider";
 
-const MainPage = ({ handleOpenPageFromApp }) => {
+const MainPage = () => {
+  const { handleTogglePage } = useContext(baseContext);
   return (
     <MainSection title="Журнал расходов">
       <MainInfo
-        handleOpenPageFromMain={handleOpenPageFromApp}
+        handleOpenPageFromMain={handleTogglePage}
         btnIcon="icon-plus"
         options={mainInfoCosts}
         title="Расходы"
@@ -23,22 +26,18 @@ const MainPage = ({ handleOpenPageFromApp }) => {
         options={mainInfoIncomes}
         title="Доходы"
         activePage="incomes"
-        handleOpenPageFromMain={handleOpenPageFromApp}
+        handleOpenPageFromMain={handleTogglePage}
       />
       <MainInfo
         btnIcon="icon-navigation-more"
         options={mainInfoBalance}
         title="Баланс"
         activePage="balance"
-        handleOpenPageFromMain={handleOpenPageFromApp}
+        handleOpenPageFromMain={handleTogglePage}
       />
       <StatisticsBtns />
     </MainSection>
   );
-};
-
-MainPage.propTypes = {
-  handleOpenPageFromApp: PropTypes.func.isRequired,
 };
 
 export default MainPage;
