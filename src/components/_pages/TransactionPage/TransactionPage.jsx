@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -11,13 +11,9 @@ import {
   incomesCategories,
 } from "../../../assets/options/transactionCategories.json";
 import { addTransactionApi } from "../../../services/api";
+import { baseContext } from "../../../context/BaseProvider";
 
-const TransactionPage = ({
-  transType,
-  handleGoBack,
-  addTransaction,
-  setError,
-}) => {
+const TransactionPage = ({ transType, addTransaction, setError }) => {
   const [day, setDay] = useState("2021-10-29");
   const [time, setTime] = useState("16:15");
   const [category, setCategory] = useState(
@@ -31,6 +27,8 @@ const TransactionPage = ({
   const [categoriesList, setCategoriesList] = useState(
     transType === "costs" ? costsCategories : incomesCategories
   );
+
+  const { handleTogglePage } = useContext(baseContext);
 
   const toggleCatList = () => setIsOpenCatList((prev) => !prev);
 
@@ -98,7 +96,7 @@ const TransactionPage = ({
   return (
     <>
       <GoBackHeader
-        handleGoBack={!isOpenCatList ? handleGoBack : toggleCatList}
+        handleGoBack={!isOpenCatList ? handleTogglePage : toggleCatList}
         title={
           isOpenCatList
             ? "Категории"
@@ -175,7 +173,6 @@ const TransactionPage = ({
 
 TransactionPage.propTypes = {
   transType: PropTypes.string.isRequired,
-  handleGoBack: PropTypes.func.isRequired,
   addTransaction: PropTypes.func.isRequired,
 };
 
