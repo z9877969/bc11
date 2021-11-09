@@ -7,15 +7,21 @@ import {
   mainInfoIncomes,
   mainInfoBalance,
 } from "../../../assets/options/mainInfoOpts.json";
-import { useContext } from "react";
-import { baseContext } from "../../../context/BaseProvider";
+import { useHistory } from "react-router-dom";
 
 const MainPage = () => {
-  const { handleTogglePage } = useContext(baseContext);
+
+  const { push } = useHistory();
+
+  const openActivePage = (activePage) => {
+    const pathName = activePage === 'balance' ? '/balance' : `/transaction/${activePage}`;
+    push(pathName)
+  };
+
   return (
     <MainSection title="Журнал расходов">
       <MainInfo
-        handleOpenPageFromMain={handleTogglePage}
+        handleOpenPageFromMain={openActivePage}
         btnIcon="icon-plus"
         options={mainInfoCosts}
         title="Расходы"
@@ -26,14 +32,14 @@ const MainPage = () => {
         options={mainInfoIncomes}
         title="Доходы"
         activePage="incomes"
-        handleOpenPageFromMain={handleTogglePage}
+        handleOpenPageFromMain={openActivePage}
       />
       <MainInfo
         btnIcon="icon-navigation-more"
         options={mainInfoBalance}
         title="Баланс"
         activePage="balance"
-        handleOpenPageFromMain={handleTogglePage}
+        handleOpenPageFromMain={openActivePage}
       />
       <StatisticsBtns />
     </MainSection>

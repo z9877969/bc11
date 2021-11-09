@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
+import { Route, Switch } from "react-router-dom";
 import { baseContext } from "../../context/BaseProvider";
 import { getTransactionsApi } from "../../services/api";
+import BalancePage from "../_pages/BalancePage";
 import MainPage from "../_pages/MainPage/MainPage";
 import TransactionPage from "../_pages/TransactionPage/TransactionPage";
 import "./App.css";
@@ -40,45 +42,22 @@ const App = () => {
   };
   if (error) return <h1>{error.message}</h1>;
   if (isLoading) return <h1>Loading...</h1>;
-  switch (activePage) {
-    case "costs":
-      return (
+
+  return (
+    <Switch>
+      <Route path='/' exact component={MainPage} />
+      <Route path='/transaction/:transType'>
         <TransactionPage
-          transType={"costs"}
           addTransaction={addTransaction}
           setError={setError}
         />
-      );
-    case "incomes":
-      return (
-        <TransactionPage
-          transType={"incomes"}
-          addTransaction={addTransaction}
-          setError={setError}
-        />
-      );
-    case "balance":
-      return (
-        <>
-          <h1>Balance</h1>
-          <ul>
-            {[...costs, ...incomes].map(
-              ({ day, time, category, sum, currency, id }) => (
-                <li key={id}>
-                  <span>{day}</span>
-                  <span>{time}</span>
-                  <span>{category}</span>
-                  <span>{sum}</span>
-                  <span>{currency}</span>
-                </li>
-              )
-            )}
-          </ul>
-        </>
-      );
-    default:
-      return <MainPage />;
-  }
+      </Route>
+      <Route path='/balance'>
+        <BalancePage costs={costs} incomes={incomes} />
+      </Route>
+    </Switch>
+  )
+
 };
 
 export default App;
