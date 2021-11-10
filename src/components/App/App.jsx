@@ -2,10 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import { baseContext } from "../../context/BaseProvider";
 import { getTransactionsApi } from "../../services/api";
-import BalancePage from "../_pages/BalancePage";
-import MainPage from "../_pages/MainPage/MainPage";
-import TransactionPage from "../_pages/TransactionPage/TransactionPage";
-import TransactionsHistoryPage from "../_pages/TransactionsHistoryPage";
+import BalancePage from "../../pages/BalancePage";
+import MainPage from "../../pages/MainPage";
+import TransactionPage from "../../pages/TransactionPage";
+import TransactionsHistoryPage from "../../pages/TransactionsHistoryPage";
 import "./App.css";
 
 const App = () => {
@@ -46,22 +46,18 @@ const App = () => {
 
   return (
     <Switch>
-      <Route path='/' exact component={MainPage} />
-      <Route path='/transaction/:transType'>
-        <TransactionPage
-          addTransaction={addTransaction}
-          setError={setError}
-        />
+      <Route path="/" exact component={MainPage} />
+      <Route path="/transaction/:transType">
+        <TransactionPage addTransaction={addTransaction} setError={setError} />
       </Route>
-      <Route path='/balance'>
+      <Route path="/balance">
         <BalancePage costs={costs} incomes={incomes} />
       </Route>
       <Route path="/history/:transType">
-        <TransactionsHistoryPage/>
+        <TransactionsHistoryPage />
       </Route>
     </Switch>
-  )
-
+  );
 };
 
 export default App;

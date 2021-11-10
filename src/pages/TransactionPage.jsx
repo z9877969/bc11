@@ -3,15 +3,15 @@ import { useRouteMatch, useHistory, Route, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import CategoriesList from "../../CategoriesList/CategoriesList";
-import GoBackHeader from "../../_shared/GoBackHeader/GoBackHeader";
-import LabelInput from "../../_shared/LabelInput/LabelInput";
-import Button from "../../_shared/Button/Button";
+import CategoriesList from "../components/CategoriesList/CategoriesList";
+import GoBackHeader from "../components/_shared/GoBackHeader/GoBackHeader";
+import LabelInput from "../components/_shared/LabelInput/LabelInput";
+import Button from "../components/_shared/Button/Button";
 import {
   costsCategories,
   incomesCategories,
-} from "../../../assets/options/transactionCategories.json";
-import { addTransactionApi } from "../../../services/api";
+} from "../assets/options/transactionCategories.json";
+import { addTransactionApi } from "../services/api";
 
 const TransactionPage = ({ addTransaction, setError }) => {
   const {
@@ -29,25 +29,21 @@ const TransactionPage = ({ addTransaction, setError }) => {
   const [sum, setSum] = useState("");
   const [currency, setCurrency] = useState("UAH");
   const [comment, setComment] = useState("");
-  const [isOpenCatList, setIsOpenCatList] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [categoriesList, setCategoriesList] = useState(
     transType === "costs" ? costsCategories : incomesCategories
   );
 
-
-  const handleGoBack = () => {
-    push("/");
-  };
-  const openCatList = () => push({
-    pathname: url + "/cat-list", state: {
-  from: location
-}});
-  // const toggleCatList = () => setIsOpenCatList((prev) => !prev);
+  const openCatList = () =>
+    push({
+      pathname: url + "/cat-list",
+      state: {
+        from: location,
+      },
+    });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     switch (name) {
       case "day":
         setDay(value);
@@ -57,7 +53,7 @@ const TransactionPage = ({ addTransaction, setError }) => {
         return;
       case "category":
         setCategory(value);
-        setIsOpenCatList(false);
+        push(location.state?.from || "/");
         return;
       case "sum":
         setSum(value);
@@ -110,77 +106,78 @@ const TransactionPage = ({ addTransaction, setError }) => {
     <>
       <GoBackHeader
         title={
-          !isExact ? "Категории"
+          !isExact
+            ? "Категории"
             : transType === "incomes"
             ? "Доходы"
             : "Расходы"
         }
       />
       <Switch>
-      <Route path="/transaction/:transType/cat-list">
-        <CategoriesList
-          categoriesList={categoriesList}
-          handleChange={handleChange}
-          currCategory={category}
-          deleteCategory={deleteCategory}
-          addCategory={addCategory}
-        />
-      </Route>
-      <Route>
-        <form onSubmit={handleSubmit}>
-          <Button type="submit" title="Ok" />{" "}
-          {isLoading && (
-            <Loader
-              type="Puff"
-              color="#00BFFF"
-              height={30}
-              width={30}
-              timeout={3000} //3 secs
-            />
-          )}
-          <LabelInput
-            value={day}
-            title={"День"}
-            name={"day"}
-            type={"date"}
-            cbOnChange={handleChange}
+        <Route path="/transaction/:transType/cat-list">
+          <CategoriesList
+            categoriesList={categoriesList}
+            handleChange={handleChange}
+            currCategory={category}
+            deleteCategory={deleteCategory}
+            addCategory={addCategory}
           />
-          <LabelInput
-            value={time}
-            title={"Время"}
-            name={"time"}
-            type={"time"}
-            cbOnChange={handleChange}
-          />
-          <LabelInput
-            title={"Категория"}
-            name={"category"}
-            type={"button"}
-            value={categoryValue}
-            cbOnClick={openCatList}
-          />
-          <LabelInput
-            title={"Сумма"}
-            name={"sum"}
-            placeholder={"Введите сумму"}
-            value={sum}
-            cbOnChange={handleChange}
-          />
-          <LabelInput
-            title={"Валюта"}
-            name={"currency"}
-            type={"button"}
-            value={currency}
-          />
-          <LabelInput
-            value={comment}
-            name={"comment"}
-            placeholder={"Комментарий"}
-            cbOnChange={handleChange}
-          />
-        </form>
         </Route>
-        </Switch>
+        <Route>
+          <form onSubmit={handleSubmit}>
+            <Button type="submit" title="Ok" />{" "}
+            {isLoading && (
+              <Loader
+                type="Puff"
+                color="#00BFFF"
+                height={30}
+                width={30}
+                timeout={3000} //3 secs
+              />
+            )}
+            <LabelInput
+              value={day}
+              title={"День"}
+              name={"day"}
+              type={"date"}
+              cbOnChange={handleChange}
+            />
+            <LabelInput
+              value={time}
+              title={"Время"}
+              name={"time"}
+              type={"time"}
+              cbOnChange={handleChange}
+            />
+            <LabelInput
+              title={"Категория"}
+              name={"category"}
+              type={"button"}
+              value={categoryValue}
+              cbOnClick={openCatList}
+            />
+            <LabelInput
+              title={"Сумма"}
+              name={"sum"}
+              placeholder={"Введите сумму"}
+              value={sum}
+              cbOnChange={handleChange}
+            />
+            <LabelInput
+              title={"Валюта"}
+              name={"currency"}
+              type={"button"}
+              value={currency}
+            />
+            <LabelInput
+              value={comment}
+              name={"comment"}
+              placeholder={"Комментарий"}
+              cbOnChange={handleChange}
+            />
+          </form>
+        </Route>
+      </Switch>
     </>
   );
 };

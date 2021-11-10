@@ -1,13 +1,12 @@
-import PropTypes from "prop-types";
-import MainInfo from "../../MainInfo/MainInfo";
-import StatisticsBtns from "../../StatisticsBtns/StatisticsBtns";
-import MainSection from "../../_shared/MainSection/MainSection";
+import { useHistory } from "react-router-dom";
+import MainInfo from "../components/MainInfo/MainInfo";
+import StatisticsBtns from "../components/StatisticsBtns/StatisticsBtns";
+import MainSection from "../components/_shared/MainSection/MainSection";
 import {
   mainInfoCosts,
   mainInfoIncomes,
   mainInfoBalance,
-} from "../../../assets/options/mainInfoOpts.json";
-import { useHistory } from "react-router-dom";
+} from "../assets/options/mainInfoOpts.json";
 
 const MainPage = () => {
   const { push, location } = useHistory();
