@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useRouteMatch, useHistory } from 'react-router-dom';
+import { useRouteMatch, useHistory, Route, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -14,8 +14,12 @@ import {
 import { addTransactionApi } from "../../../services/api";
 
 const TransactionPage = ({ addTransaction, setError }) => {
-
-  const { params: { transType } } = useRouteMatch();
+  const {
+    params: { transType },
+    url,
+    isExact,
+  } = useRouteMatch();
+  const { push, location } = useHistory();
 
   const [day, setDay] = useState("2021-10-29");
   const [time, setTime] = useState("16:15");
@@ -32,13 +36,14 @@ const TransactionPage = ({ addTransaction, setError }) => {
   );
 
 
-  const { push } = useHistory();
-
   const handleGoBack = () => {
-    push('/')
+    push("/");
   };
-
-  const toggleCatList = () => setIsOpenCatList((prev) => !prev);
+  const openCatList = () => push({
+    pathname: url + "/cat-list", state: {
+  from: location
+}});
+  // const toggleCatList = () => setIsOpenCatList((prev) => !prev);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -104,16 +109,24 @@ const TransactionPage = ({ addTransaction, setError }) => {
   return (
     <>
       <GoBackHeader
-        handleGoBack={!isOpenCatList ? handleGoBack : toggleCatList}
         title={
-          isOpenCatList
-            ? "Категории"
+          !isExact ? "Категории"
             : transType === "incomes"
-              ? "Доходы"
-              : "Расходы"
+            ? "Доходы"
+            : "Расходы"
         }
       />
-      {!isOpenCatList ? (
+      <Switch>
+      <Route path="/transaction/:transType/cat-list">
+        <CategoriesList
+          categoriesList={categoriesList}
+          handleChange={handleChange}
+          currCategory={category}
+          deleteCategory={deleteCategory}
+          addCategory={addCategory}
+        />
+      </Route>
+      <Route>
         <form onSubmit={handleSubmit}>
           <Button type="submit" title="Ok" />{" "}
           {isLoading && (
@@ -144,7 +157,7 @@ const TransactionPage = ({ addTransaction, setError }) => {
             name={"category"}
             type={"button"}
             value={categoryValue}
-            cbOnClick={toggleCatList}
+            cbOnClick={openCatList}
           />
           <LabelInput
             title={"Сумма"}
@@ -166,15 +179,8 @@ const TransactionPage = ({ addTransaction, setError }) => {
             cbOnChange={handleChange}
           />
         </form>
-      ) : (
-        <CategoriesList
-          categoriesList={categoriesList}
-          handleChange={handleChange}
-          currCategory={category}
-          deleteCategory={deleteCategory}
-          addCategory={addCategory}
-        />
-      )}
+        </Route>
+        </Switch>
     </>
   );
 };

@@ -10,12 +10,19 @@ import {
 import { useHistory } from "react-router-dom";
 
 const MainPage = () => {
-
-  const { push } = useHistory();
+  const { push, location } = useHistory();
 
   const openActivePage = (activePage) => {
-    const pathName = activePage === 'balance' ? '/balance' : `/transaction/${activePage}`;
-    push(pathName)
+    const pathName =
+      activePage === "balance" ? "/balance" : `/transaction/${activePage}`;
+
+    const nextLocation = {
+      pathname: pathName,
+      state: {
+        from: location,
+      },
+    };
+    push(nextLocation);
   };
 
   return (

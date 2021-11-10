@@ -5,6 +5,7 @@ import { getTransactionsApi } from "../../services/api";
 import BalancePage from "../_pages/BalancePage";
 import MainPage from "../_pages/MainPage/MainPage";
 import TransactionPage from "../_pages/TransactionPage/TransactionPage";
+import TransactionsHistoryPage from "../_pages/TransactionsHistoryPage";
 import "./App.css";
 
 const App = () => {
@@ -54,6 +55,9 @@ const App = () => {
       </Route>
       <Route path='/balance'>
         <BalancePage costs={costs} incomes={incomes} />
+      </Route>
+      <Route path="/history/:transType">
+        <TransactionsHistoryPage/>
       </Route>
     </Switch>
   )
