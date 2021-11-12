@@ -90,11 +90,6 @@ const TransactionPage = ({ addTransaction, setError }) => {
       .finally(() => toggleLoader());
   };
 
-  const deleteCategory = (id) =>
-    setCategoriesList((prev) =>
-      prev.filter((category) => category.name !== id)
-    );
-
   const addCategory = (category) =>
     setCategoriesList((prev) => [...prev, category]);
 
@@ -119,8 +114,8 @@ const TransactionPage = ({ addTransaction, setError }) => {
             categoriesList={categoriesList}
             handleChange={handleChange}
             currCategory={category}
-            deleteCategory={deleteCategory}
             addCategory={addCategory}
+            transType={transType}
           />
         </Route>
         <Route>

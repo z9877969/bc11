@@ -4,6 +4,13 @@ import shortid from "shortid";
 import Button from "../_shared/Button/Button";
 import LabelInput from "../_shared/LabelInput/LabelInput";
 import s from "./CategoriesList.module.css";
+import { connect } from "react-redux";
+import {
+  addCostsCategory,
+  addIncomesCategory,
+  removeCostsCategory,
+  removeIncomesCategory,
+} from "../../redux/categories/categoriesActions";
 
 const Item = ({ name, title, deleteCategory, handleChange, currCategory }) => {
   const cbRemove = () => {
@@ -39,27 +46,34 @@ class CategoriesList extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { addCategory } = this.props;
+    const { addCostsCategory, addIncomesCategory, transType } = this.props;
     const { category } = this.state;
-    addCategory({ title: category, name: shortid.generate() });
+    const newCategory = { title: category, name: shortid.generate() };
+    transType === "costs"
+      ? addCostsCategory(newCategory)
+      : addIncomesCategory(newCategory);
   };
   handleChangeCategory = (e) => {
     const { value } = e.target;
     this.setState({ category: value });
   };
-
-  render() {
-    const { categoriesList, deleteCategory, handleChange, currCategory } =
+  deleteCategory = (id) => {
+    const { transType, removeCostsCategory, removeIncomesCategory } =
       this.props;
+    transType === "costs" ? removeCostsCategory(id) : removeIncomesCategory(id);
+  };
+  render() {
+    const { categories, handleChange, currCategory, transType } = this.props;
+
     return (
       <>
         <ul>
-          {categoriesList.map(({ title, name }) => (
+          {categories[transType].map(({ title, name }) => (
             <Item
               key={name}
               title={title}
               name={name}
-              deleteCategory={deleteCategory}
+              deleteCategory={this.deleteCategory}
               handleChange={handleChange}
               currCategory={currCategory}
             />
@@ -83,5 +97,13 @@ class CategoriesList extends Component {
 CategoriesList.propTypes = {
   title: PropTypes.string,
 };
-
-export default CategoriesList;
+const mapStateToProps = (state) => ({
+  categories: state.categories,
+});
+const mapDispatchToProps = {
+  addCostsCategory,
+  addIncomesCategory,
+  removeCostsCategory,
+  removeIncomesCategory,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(CategoriesList);
