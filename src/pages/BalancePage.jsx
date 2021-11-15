@@ -1,7 +1,11 @@
 import { useHistory } from "react-router-dom";
 import GoBackHeader from "../components/_shared/GoBackHeader/GoBackHeader";
+import { useSelector } from "react-redux";
 
-export default function BalancePage({ costs, incomes }) {
+export default function BalancePage() {
+
+  const {incomes, costs} = useSelector((state) => state.transactions)
+
   const { push } = useHistory();
 
   const handleGoBack = () => push("/");

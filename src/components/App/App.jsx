@@ -1,29 +1,30 @@
 import { useContext, useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { baseContext } from "../../context/BaseProvider";
 import { getTransactionsApi } from "../../services/api";
 import BalancePage from "../../pages/BalancePage";
 import MainPage from "../../pages/MainPage";
 import TransactionPage from "../../pages/TransactionPage";
 import TransactionsHistoryPage from "../../pages/TransactionsHistoryPage";
+import {getCosts, getIncomes } from '../../redux/transactions/transactionsActions';
 import "./App.css";
 
 const App = () => {
-  const [incomes, setIncomes] = useState([]);
-  const [costs, setCosts] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { activePage } = useContext(baseContext);
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     const getTransactions = async () => {
       setIsLoading(true);
       try {
         const costs = await getTransactionsApi("costs");
-        setCosts(costs);
+        dispatch(getCosts(costs));
         const incomes = await getTransactionsApi("incomes");
-        setIncomes(incomes);
+        dispatch(getIncomes(incomes));
       } catch (err) {
         setError(err);
       } finally {
@@ -33,25 +34,17 @@ const App = () => {
     getTransactions();
   }, []);
 
-  const addTransaction = ({ transaction, transType }) => {
-    if (transType === "costs") {
-      setCosts((prev) => [...prev, transaction]);
-    }
-    if (transType === "incomes") {
-      setIncomes((prev) => [...prev, transaction]);
-    }
-  };
-  if (error) return <h1>{error.message}</h1>;
+    if (error) return <h1>{error.message}</h1>;
   if (isLoading) return <h1>Loading...</h1>;
 
   return (
     <Switch>
       <Route path="/" exact component={MainPage} />
       <Route path="/transaction/:transType">
-        <TransactionPage addTransaction={addTransaction} setError={setError} />
+        <TransactionPage setError={setError} />
       </Route>
       <Route path="/balance">
-        <BalancePage costs={costs} incomes={incomes} />
+        <BalancePage  />
       </Route>
       <Route path="/history/:transType">
         <TransactionsHistoryPage />
