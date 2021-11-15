@@ -71,6 +71,15 @@
       "currency": "UAH",
       "comment": "",
       "id": 9
+    },
+    {
+      "day": "2021-10-29",
+      "time": "16:15",
+      "category": "foods",
+      "sum": "500",
+      "currency": "UAH",
+      "comment": "",
+      "id": 10
     }
   ],
   "incomes": [
@@ -82,6 +91,15 @@
       "currency": "UAH",
       "comment": "",
       "id": 1
+    },
+    {
+      "day": "2021-10-29",
+      "time": "16:15",
+      "category": "salary",
+      "sum": "5000",
+      "currency": "UAH",
+      "comment": "",
+      "id": 2
     }
   ]
 }

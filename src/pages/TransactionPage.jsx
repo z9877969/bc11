@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouteMatch, useHistory, Route, Switch } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -12,8 +13,16 @@ import {
   incomesCategories,
 } from "../assets/options/transactionCategories.json";
 import { addTransactionApi } from "../services/api";
+import { addIncomes, addCosts } from '../redux/transactions/transactionsActions';
+
+
+
 
 const TransactionPage = ({ addTransaction, setError }) => {
+
+  const dispatch = useDispatch();
+
+
   const {
     params: { transType },
     url,
@@ -85,7 +94,11 @@ const TransactionPage = ({ addTransaction, setError }) => {
     };
     toggleLoader();
     addTransactionApi({ transaction, transType })
-      .then((transaction) => addTransaction({ transaction, transType }))
+      // .then((transaction) => addTransaction({ transaction, transType }))
+      .then((transaction) => {
+        transType === "incomes" && dispatch(addIncomes(transaction));
+        transType === "costs" && dispatch(addCosts(transaction));
+      })
       .catch((err) => setError(err.message))
       .finally(() => toggleLoader());
   };
