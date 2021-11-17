@@ -1,21 +1,25 @@
 import { useContext, useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { baseContext } from "../../context/BaseProvider";
 import { getTransactionsApi } from "../../services/api";
 import BalancePage from "../../pages/BalancePage";
 import MainPage from "../../pages/MainPage";
 import TransactionPage from "../../pages/TransactionPage";
 import TransactionsHistoryPage from "../../pages/TransactionsHistoryPage";
-import {getCosts, getIncomes } from '../../redux/transactions/transactionsActions';
+import {
+  getCosts,
+  getIncomes,
+} from "../../redux/transactions/transactionsActions";
 import "./App.css";
+import { getIsLoading } from "../../redux/loader/loaderSelectors";
 
 const App = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const isLoadingRedux = useSelector(getIsLoading);
 
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     const getTransactions = async () => {
@@ -34,7 +38,7 @@ const App = () => {
     getTransactions();
   }, []);
 
-    if (error) return <h1>{error.message}</h1>;
+  if (error) return <h1>{error.message}</h1>;
   if (isLoading) return <h1>Loading...</h1>;
 
   return (
@@ -44,7 +48,7 @@ const App = () => {
         <TransactionPage setError={setError} />
       </Route>
       <Route path="/balance">
-        <BalancePage  />
+        <BalancePage />
       </Route>
       <Route path="/history/:transType">
         <TransactionsHistoryPage />

@@ -1,18 +1,18 @@
 import { createReducer, combineReducers } from "@reduxjs/toolkit";
 import {
-  addIncomes,
-  addCosts,
   getIncomes,
   getCosts,
+  addIncomesSuccess,
+  addCostsSuccess,
 } from "./transactionsActions";
 
 const incomesReducer = createReducer([], {
-  [addIncomes]: (state, { payload }) => [...state, payload],
+  [addIncomesSuccess]: (state, { payload }) => [...state, payload],
   [getIncomes]: (_, { payload }) => payload,
 });
 
 const costsReducer = createReducer([], {
-  [addCosts]: (state, { payload }) => [...state, payload],
+  [addCostsSuccess]: (state, { payload }) => [...state, payload],
   [getCosts]: (_, { payload }) => payload,
 });
 
@@ -22,3 +22,21 @@ const transactionsReducer = combineReducers({
 });
 
 export default transactionsReducer;
+
+// const actionFn = (n) => ({
+//   type: "type",
+//   payload: n,
+// });
+
+// const obj = { [actionFn]: (state, action) => state + action };
+
+// const createRreducer =
+//   (iS, obj) =>
+//   (state = iS, action) => {
+//     switch (action.type) {
+//       case actionFn().type:
+//         return ;
+//     }
+//   };
+
+// const filterMethod =  
