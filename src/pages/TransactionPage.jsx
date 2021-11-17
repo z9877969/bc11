@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouteMatch, useHistory, Route, Switch } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -13,15 +13,15 @@ import {
   incomesCategories,
 } from "../assets/options/transactionCategories.json";
 import { addTransactionApi } from "../services/api";
-import { addIncomes, addCosts } from '../redux/transactions/transactionsActions';
+import {
+  addIncomes,
+  addCosts,
+} from "../redux/transactions/transactionsActions";
+import { addTranction } from "../redux/transactions/transactionsOperations";
+import { getIsLoading } from "../redux/loader/loaderSelectors";
 
-
-
-
-const TransactionPage = ({ addTransaction, setError }) => {
-
+const TransactionPage = () => {
   const dispatch = useDispatch();
-
 
   const {
     params: { transType },
@@ -29,6 +29,8 @@ const TransactionPage = ({ addTransaction, setError }) => {
     isExact,
   } = useRouteMatch();
   const { push, location } = useHistory();
+
+  const isLoading = useSelector(getIsLoading); // (state) => state.isLoading.value;
 
   const [day, setDay] = useState("2021-10-29");
   const [time, setTime] = useState("16:15");
@@ -38,7 +40,6 @@ const TransactionPage = ({ addTransaction, setError }) => {
   const [sum, setSum] = useState("");
   const [currency, setCurrency] = useState("UAH");
   const [comment, setComment] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [categoriesList, setCategoriesList] = useState(
     transType === "costs" ? costsCategories : incomesCategories
   );
@@ -78,10 +79,6 @@ const TransactionPage = ({ addTransaction, setError }) => {
     }
   };
 
-  const toggleLoader = () => {
-    setIsLoading((prev) => !prev);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const transaction = {
@@ -92,15 +89,7 @@ const TransactionPage = ({ addTransaction, setError }) => {
       currency,
       comment,
     };
-    toggleLoader();
-    addTransactionApi({ transaction, transType })
-      // .then((transaction) => addTransaction({ transaction, transType }))
-      .then((transaction) => {
-        transType === "incomes" && dispatch(addIncomes(transaction));
-        transType === "costs" && dispatch(addCosts(transaction));
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => toggleLoader());
+    dispatch(addTranction({ transaction, transType }));
   };
 
   const addCategory = (category) =>
@@ -134,15 +123,6 @@ const TransactionPage = ({ addTransaction, setError }) => {
         <Route>
           <form onSubmit={handleSubmit}>
             <Button type="submit" title="Ok" />{" "}
-            {isLoading && (
-              <Loader
-                type="Puff"
-                color="#00BFFF"
-                height={30}
-                width={30}
-                timeout={3000} //3 secs
-              />
-            )}
             <LabelInput
               value={day}
               title={"День"}
@@ -184,6 +164,15 @@ const TransactionPage = ({ addTransaction, setError }) => {
               cbOnChange={handleChange}
             />
           </form>
+          {isLoading && (
+            <Loader
+              type="Puff"
+              color="#00BFFF"
+              height={50}
+              width={50}
+              timeout={3000} //3 secs
+            />
+          )}
         </Route>
       </Switch>
     </>
